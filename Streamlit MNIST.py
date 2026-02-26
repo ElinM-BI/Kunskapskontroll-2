@@ -144,7 +144,7 @@ def preprocess_canvas_image(img_rgba: np.ndarray) -> np.ndarray:
 
     # Om användaren har fyllt för stor del av rutan så är det troligen kladd
     if ink_ratio > 0.15:
-        raise ValueError("För mycket kladd. Rita en tydligare siffra.")
+        raise ValueError("Otydligt. Rita en tydligare siffra.")
 
     # Tyngdpunkt (center of mass)
     cy, cx = ndimage.center_of_mass(img)
@@ -256,7 +256,7 @@ with right_col:
 
         if best_prob is not None:
             st.write(f"Säkerhet: **{best_prob*100:.1f}%**")
-            if best_prob < 0.45:
+            if best_prob < 0.60:
                 st.info("Jag är osäker. Rita igen och lite tydligare, gärna större och mer centrerat.")
 
         if probs is not None:
