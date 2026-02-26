@@ -61,7 +61,8 @@ st.title("AI som tolkar handskrivna siffror")
 st.caption("Maskininlärningsmodell tränad på MNIST - utvecklad av Elin Molvig")
 st.write("Rita en siffra 0 till 9. Tryck på prediktion för att se vad modellen gissar. Välj sedan rätt eller fel så hjälper du modellen att bli bättre.")
 
-MODEL_PATH = r"C:/Users/elin-/OneDrive/Documents/GitRep/Kunskapskontroll 2/Kunskapskontroll-2/mnist_svc_final.pkl"
+MODEL_PATH = "mnist_svc_final.pkl"
+
 @st.cache_resource
 def load_model():
     return joblib.load(MODEL_PATH)
