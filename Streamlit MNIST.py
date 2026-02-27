@@ -5,13 +5,17 @@ import joblib
 from streamlit_drawable_canvas import st_canvas
 from scipy import ndimage
 
+
+
+
+# Konfigurerar sidans titel, ikon och layout (måste ligga först i scriptet)
 st.set_page_config(
     page_title="AI som tolkar handskrivna siffror",
     page_icon="🖋️",
     layout="wide"
 )
 
-# DESIGN, Färgval, jag vill att knapparna har en skugga så det ser ut som att de svävar.
+# DESIGN, Färgval, jag vill att knapparna har en skugga så det ser ut som att de svävar. Detta är liknande temafiler som vi kodar i JSON för Power BI
 st.markdown(
     """
     <style>
@@ -56,17 +60,20 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
+# Visar sidans rubrik, beskrivning och instruktioner till användaren
 st.title("AI som tolkar handskrivna siffror")
 st.caption("Maskininlärningsmodell tränad på MNIST - utvecklad av Elin Molvig")
 st.write("Rita en siffra 0 till 9. Tryck på prediktion för att se vad modellen gissar. Välj sedan rätt eller fel så hjälper du modellen att bli bättre.")
 
+# Vår ML modells sökväg
 MODEL_PATH = "mnist_svc_final.pkl"
 
+# Laddar den tränade modellen en gång och cachar(sparar) den för att undvika omladdning vid varje körning
 @st.cache_resource
 def load_model():
     return joblib.load(MODEL_PATH)
 
+#Nu ska vi skapa vår preprocess för hanteringen av bilden som kommer in till Canvas liknar bild-datan från MNIST
 def preprocess_canvas_image(img_rgba: np.ndarray) -> np.ndarray:
     """
     Tar RGBA bilddata från canvas och gör om till en input som liknar MNIST.
@@ -205,6 +212,7 @@ with left_col: #Detta är vår canvas, 14 på penselbredd är bäst för MNIST b
         preview = st.session_state.last_x.reshape(28, 28).astype(np.uint8)
         st.image(preview, caption="Efter preprocessing 28x28", width=170)
 
+#Nedan är högerkolumnen på appen. Den visat modellens statistik och hanterar prediktion. 
 with right_col:
     st.subheader("Träffsäkerhet på testade siffror")
     total = st.session_state.total
@@ -222,7 +230,7 @@ with right_col:
     do_predict = st.button("Prediktera", use_container_width=True)
 
     if do_predict:
-        if canvas_result.image_data is None:
+        if canvas_result.image_data is None: #Säkerhetsställer att det ritas något. 
             st.warning("Rita en siffra först.")
         else:
             try:
@@ -271,7 +279,7 @@ with right_col:
             st.subheader("Var gissningen rätt?")
             c1, c2 = st.columns(2)
 
-            with c1:
+            with c1: #Denna kod räknar och sparar resultat i session state om det blir rätt eller fel. Rerun tvingar skriptet att köras om igen.
                 if st.button("✅ Rätt", use_container_width=True):
                     st.session_state.total += 1
                     st.session_state.correct += 1
