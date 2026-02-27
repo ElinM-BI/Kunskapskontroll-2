@@ -1,4 +1,4 @@
-🖋️ AI som tolkar handskrivna siffror
+🖋️ AI som tolkar handskrivna siffror --> https://molvigsaiapp.streamlit.app/
 
 Detta projekt är en komplett maskininlärningspipeline där jag:
 - Utforskar och utvärderar flera modeller
